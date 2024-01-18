@@ -1,0 +1,11 @@
+spring:
+  profiles:
+    active: test
+  jpa:
+    open-in-view: false
+  jackson:
+    serialization:
+      indent-output: true
+
+cors:
+  origins: ${CORS_ORIGINS:http://localhost:5173,http://localhost:3000}
