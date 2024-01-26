@@ -36,6 +36,4 @@ public class UserConfig {
     public SaveUserHandler createSaveUserHandler(UserRepository userRepository, UserValidatorRepository userValidatorRepository) {
         return new SaveUserHandler(userRepository, userValidatorRepository);
     }
-
-
 }
