@@ -1,7 +1,7 @@
 package br.com.elwgomes.registerapi.infra.user.persistence.mapper;
 
 import br.com.elwgomes.registerapi.core.user.domain.User;
-import br.com.elwgomes.registerapi.infra.user.controller.dto.UserDTO;
+import br.com.elwgomes.registerapi.core.user.dto.UserDTO;
 import br.com.elwgomes.registerapi.infra.user.persistence.entity.UserEntity;
 
 public class UserRepositoryMapperImpl implements UserRepositoryMapper<User, UserEntity, UserDTO> {
@@ -34,7 +34,6 @@ public class UserRepositoryMapperImpl implements UserRepositoryMapper<User, User
     public UserDTO mapEntityToDto(UserEntity entity) {
         return new UserDTO(
                 entity.getUsername(),
-                entity.getDocument(),
                 entity.getEmail(),
                 entity.getRole()
         );
@@ -44,7 +43,6 @@ public class UserRepositoryMapperImpl implements UserRepositoryMapper<User, User
     public UserDTO mapDomainToDto(User domain) {
         return new UserDTO(
                 domain.getUsername(),
-                domain.getDocument(),
                 domain.getEmail(),
                 domain.getRole()
         );

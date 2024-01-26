@@ -3,9 +3,9 @@ package br.com.elwgomes.registerapi.infra.user.controller.impl;
 import br.com.elwgomes.registerapi.core.user.exception.UserAlreadyExistsException;
 import br.com.elwgomes.registerapi.core.user.usecase.command.GetAllUsersCommand;
 import br.com.elwgomes.registerapi.core.user.usecase.command.SaveUserCommand;
-import br.com.elwgomes.registerapi.infra.user.controller.UserController;
+import br.com.elwgomes.registerapi.infra.user.controller.UserResource;
 import br.com.elwgomes.registerapi.infra.user.controller.response.UserResponse;
-import br.com.elwgomes.registerapi.infra.user.controller.dto.UserDTO;
+import br.com.elwgomes.registerapi.core.user.dto.UserDTO;
 import br.com.elwgomes.registerapi.infra.user.persistence.entity.UserEntity;
 import br.com.elwgomes.registerapi.infra.user.persistence.mapper.UserRepositoryMapperImpl;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("api/v1/user")
 @RequiredArgsConstructor
-public class UserControllerImpl implements UserController {
+public class UserController implements UserResource {
 
     private final GetAllUsersCommand getAllUsersCommand;
     private final SaveUserCommand saveUserCommand;
