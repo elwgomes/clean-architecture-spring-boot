@@ -6,6 +6,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.UUID;
 
 @Data
@@ -19,4 +20,7 @@ public class User implements Serializable {
     private String document;
     private String email;
     private UserType role;
+
+    private List<Address> addresses;
+
 }

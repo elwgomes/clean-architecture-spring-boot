@@ -8,6 +8,8 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.util.Collection;
+import java.util.List;
 import java.util.UUID;
 
 @Data
@@ -28,4 +30,9 @@ public class UserEntity implements Serializable {
 
     @Enumerated(EnumType.STRING)
     private UserType role;
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id", nullable = true)
+    private List<AddressEntity> addresses;
+
 }
