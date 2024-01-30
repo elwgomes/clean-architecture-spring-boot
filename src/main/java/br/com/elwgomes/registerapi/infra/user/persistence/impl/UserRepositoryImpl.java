@@ -33,4 +33,19 @@ public class UserRepositoryImpl implements UserRepository, UserValidatorReposito
     public Boolean doesUserExists(String username, String document, String email) {
         return jpaRepository.existsByUsernameOrDocumentOrEmail(username, document, email);
     }
+
+    @Override
+    public Boolean isUserNameNull(String username) {
+        return username == null || username.isBlank() || username.isEmpty();
+    }
+
+    @Override
+    public Boolean isDocumentNull(String document) {
+        return document == null || document.isBlank() || document.isEmpty();
+    }
+
+    @Override
+    public Boolean isEmailNull(String email) {
+        return email == null || email.isBlank() || email.isEmpty();
+    }
 }

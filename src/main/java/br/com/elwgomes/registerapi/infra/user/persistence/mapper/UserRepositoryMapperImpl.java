@@ -14,13 +14,13 @@ public class UserRepositoryMapperImpl implements UserRepositoryMapper<User, User
 
     @Override
     public User mapToDomain(UserEntity entity) {
-        List<Address> addresses = entity.getAddresses().stream().map(address -> new Address(address.getZipCode(), address.getCity(), address.getState(), address.getNeighborhood(), address.getStreet(), address.getNumber())).collect(Collectors.toList());
+        List<Address> addresses = entity.getAddresses().stream().map(address -> new Address(null, address.getZipCode(), address.getCity(), address.getState(), address.getNeighborhood(), address.getStreet(), address.getNumber())).collect(Collectors.toList());
         return new User(entity.getId(), entity.getUsername(), entity.getPassword(), entity.getDocument(), entity.getEmail(), entity.getRole(), addresses);
     }
 
     @Override
     public UserEntity mapToEntity(User domain) {
-        List<AddressEntity> addressesEntity = domain.getAddresses().stream().map(address -> new AddressEntity(address.getZipCode(), address.getCity(), address.getState(), address.getNeighborhood(), address.getStreet(), address.getNumber())).collect(Collectors.toList());
+        List<AddressEntity> addressesEntity = domain.getAddresses().stream().map(address -> new AddressEntity(null, address.getZipCode(), address.getCity(), address.getState(), address.getNeighborhood(), address.getStreet(), address.getNumber())).collect(Collectors.toList());
         return new UserEntity(domain.getId(), domain.getUsername(), domain.getPassword(), domain.getDocument(), domain.getEmail(), domain.getRole(), addressesEntity);
     }
 

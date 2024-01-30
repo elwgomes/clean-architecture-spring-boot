@@ -21,12 +21,4 @@ public class Address implements Serializable {
     private String street;
     private String number;
 
-    public Address(String zipCode, String city, String state, String neighborhood, String street, String number) {
-        this.zipCode = zipCode;
-        this.city = city;
-        this.state = state;
-        this.neighborhood = neighborhood;
-        this.street = street;
-        this.number = number;
-    }
 }

@@ -23,16 +23,22 @@ public class UserEntity implements Serializable {
     @GeneratedValue( strategy = GenerationType.UUID )
     private UUID id;
 
+    @Column(unique = true, length = 32, nullable = false)
     private String username;
+
     private String password;
+
+    @Column(unique = true, length = 64, nullable = false)
     private String document;
+
+    @Column(unique = true, length = 64, nullable = false)
     private String email;
 
     @Enumerated(EnumType.STRING)
     private UserType role;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_id", nullable = true)
+    @JoinColumn(name = "user_id")
     private List<AddressEntity> addresses;
 
 }
