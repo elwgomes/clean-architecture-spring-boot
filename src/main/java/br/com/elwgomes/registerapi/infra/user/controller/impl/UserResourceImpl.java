@@ -12,13 +12,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("api/v1/user")
 @RequiredArgsConstructor
-public class UserController implements UserResource {
+public class UserResourceImpl implements UserResource {
 
     private final GetAllUsersCommand getAllUsersCommand;
     private final SaveUserCommand saveUserCommand;
@@ -38,7 +39,7 @@ public class UserController implements UserResource {
 
     @Override
     @PostMapping
-    public UserResponse<Boolean> saveUser(@RequestBody UserEntity entity) throws Exception {
+    public UserResponse<Boolean> saveUser(@RequestBody @Valid UserEntity entity) throws Exception {
         try {
             saveUserCommand.execute(mapper.mapToDomain(entity));
         } catch (UserAlreadyExistsException e) {

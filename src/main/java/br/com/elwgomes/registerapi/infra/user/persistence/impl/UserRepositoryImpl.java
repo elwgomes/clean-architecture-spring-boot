@@ -6,6 +6,7 @@ import br.com.elwgomes.registerapi.core.user.repository.validator.UserValidatorR
 import br.com.elwgomes.registerapi.infra.user.persistence.mapper.UserRepositoryMapperImpl;
 import br.com.elwgomes.registerapi.infra.user.persistence.repositories.UserJpaRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.Collection;
 import java.util.stream.Collectors;
@@ -26,6 +27,11 @@ public class UserRepositoryImpl implements UserRepository, UserValidatorReposito
 
     @Override
     public void saveUser(User user) {
+        // encode password before saves on db
+        String encryptedPasswd = new BCryptPasswordEncoder().encode(user.getPassword());
+        // set encoded password
+        user.setPassword(encryptedPasswd);
+        // save user
         jpaRepository.save(mapper.mapToEntity(user));
     }
 
