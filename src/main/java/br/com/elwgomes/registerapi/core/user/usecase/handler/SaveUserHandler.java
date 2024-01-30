@@ -14,7 +14,6 @@ public class SaveUserHandler implements SaveUserCommand {
     private final UserRepository userRepository;
     private final UserValidatorRepository validator;
 
-
     @Override
     public void execute(User user) throws UserAlreadyExistsException, FieldCantBeNullException {
         if (validator.isUserNameNull(user.getUsername()) || validator.isDocumentNull(user.getDocument()) || validator.isEmailNull((user.getEmail()))) {
