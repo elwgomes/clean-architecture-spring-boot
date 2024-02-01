@@ -3,12 +3,16 @@ package br.com.elwgomes.registerapi.infra.user.persistence.impl;
 import br.com.elwgomes.registerapi.core.user.domain.User;
 import br.com.elwgomes.registerapi.core.user.repository.UserRepository;
 import br.com.elwgomes.registerapi.core.user.repository.validator.UserValidatorRepository;
+import br.com.elwgomes.registerapi.infra.user.persistence.entity.UserEntity;
 import br.com.elwgomes.registerapi.infra.user.persistence.mapper.UserRepositoryMapperImpl;
 import br.com.elwgomes.registerapi.infra.user.persistence.repositories.UserJpaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import javax.swing.text.html.Option;
 import java.util.Collection;
+import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -33,6 +37,17 @@ public class UserRepositoryImpl implements UserRepository, UserValidatorReposito
         user.setPassword(encryptedPasswd);
         // save user
         jpaRepository.save(mapper.mapToEntity(user));
+    }
+
+    @Override
+    public void deleteUser(UUID id) {
+        jpaRepository.deleteById(id);
+    }
+
+    @Override
+    public Optional<User> findById(UUID id) {
+        Optional<UserEntity> entity = jpaRepository.findById(id);
+        return entity.map(mapper::mapToDomain);
     }
 
     @Override

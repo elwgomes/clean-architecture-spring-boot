@@ -3,6 +3,7 @@ package br.com.elwgomes.registerapi.infra.user.controller.exception;
 import br.com.elwgomes.registerapi.core.user.exception.FieldCantBeNullException;
 import br.com.elwgomes.registerapi.core.user.exception.UserAlreadyExistsException;
 
+import br.com.elwgomes.registerapi.core.user.exception.UserNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -20,6 +21,12 @@ public class ExceptionAdviceController extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(FieldCantBeNullException.class)
     public ResponseEntity<ExceptionResponse> FieldCantBeNullHandler (FieldCantBeNullException exception) {
+        ExceptionResponse response = new ExceptionResponse(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST, exception.getMessage());
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
+    }
+
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity<ExceptionResponse> FieldCantBeNullHandler (UserNotFoundException exception) {
         ExceptionResponse response = new ExceptionResponse(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST, exception.getMessage());
         return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
     }

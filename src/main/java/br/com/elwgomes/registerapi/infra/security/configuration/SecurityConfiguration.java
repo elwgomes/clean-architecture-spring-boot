@@ -53,10 +53,10 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(
                         authorize -> authorize
                                 .requestMatchers(HttpMethod.POST, "auth/login").permitAll()
-                                .requestMatchers(HttpMethod.GET, "api/v1/user").authenticated()
                                 .requestMatchers(HttpMethod.POST, "api/v1/user").hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.DELETE, "api/v1/user/**").hasRole("ADMIN")
                                 .requestMatchers(toH2Console()).permitAll()
-                                .anyRequest().permitAll()
+                                .anyRequest().authenticated()
                 )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();

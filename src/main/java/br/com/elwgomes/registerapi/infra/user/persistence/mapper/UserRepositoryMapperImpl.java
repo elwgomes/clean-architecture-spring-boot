@@ -27,13 +27,19 @@ public class UserRepositoryMapperImpl implements UserRepositoryMapper<User, User
     @Override
     public UserDTO mapEntityToDto(UserEntity entity) {
         List<AddressDTO> addresses = entity.getAddresses().stream().map(address -> new AddressDTO(address.getZipCode(), address.getCity(), address.getState(), address.getNeighborhood(), address.getStreet(), address.getNumber())).collect(Collectors.toList());
-        return new UserDTO(entity.getUsername(), entity.getEmail(), entity.getRole(), addresses);
+        return new UserDTO(entity.getUsername(), entity.getEmail(), entity.getRole());
     }
 
     @Override
     public UserDTO mapDomainToDto(User domain) {
         List<AddressDTO> addresses = domain.getAddresses().stream().map(address -> new AddressDTO(address.getZipCode(), address.getCity(), address.getState(), address.getNeighborhood(), address.getStreet(), address.getNumber())).collect(Collectors.toList());
-        return new UserDTO(domain.getUsername(), domain.getEmail(), domain.getRole(), addresses);
+        return new UserDTO(domain.getUsername(), domain.getEmail(), domain.getRole());
+    }
+
+    @Override
+    public UserDTO mapDomainToDtoFullDetails(User domain) {
+        List<AddressDTO> addresses = domain.getAddresses().stream().map(address -> new AddressDTO(address.getZipCode(), address.getCity(), address.getState(), address.getNeighborhood(), address.getStreet(), address.getNumber())).collect(Collectors.toList());
+        return new UserDTO(domain.getId(), domain.getUsername(), domain.getPassword(), domain.getDocument(), domain.getEmail(), domain.getRole(), addresses);
     }
 
 }

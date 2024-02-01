@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
+import java.util.UUID;
 
 @Data
 @AllArgsConstructor
@@ -15,7 +16,9 @@ import java.util.List;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class UserDTO {
 
+    private UUID id;
     private String username;
+    private String password;
     private String document;
     private String email;
     private UserType role;
@@ -28,10 +31,4 @@ public class UserDTO {
         this.role = role;
     }
 
-    public UserDTO(String username, String email, UserType role, List<AddressDTO> addresses) {
-        this.username = username;
-        this.email = email;
-        this.role = role;
-        this.addresses = addresses;
-    }
 }

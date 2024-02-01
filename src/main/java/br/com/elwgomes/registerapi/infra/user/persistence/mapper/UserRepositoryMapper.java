@@ -5,4 +5,5 @@ public interface UserRepositoryMapper<D, E, R> {
     E mapToEntity(D domain);
     R mapEntityToDto(E entity);
     R mapDomainToDto(D domain);
+    R mapDomainToDtoFullDetails(D domain);
 }
