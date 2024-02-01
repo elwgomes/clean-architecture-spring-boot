@@ -67,7 +67,7 @@ public class UserResourceImpl implements UserResource {
         } catch (UserNotFoundException exception) {
             throw new UserNotFoundException(exception.getMessage());
         }
-        return new UserResponse<>("no content", String.valueOf(HttpStatus.NO_CONTENT), "User has been deleted.");
+        return new UserResponse<>("error", String.valueOf(HttpStatus.NO_CONTENT), "User has been deleted.");
     }
 
     @Override
