@@ -1,6 +1,7 @@
 package br.com.elwgomes.registerapi.infra.user.controller.exception;
 
 import br.com.elwgomes.registerapi.core.user.exception.FieldCantBeNullException;
+import br.com.elwgomes.registerapi.core.user.exception.StandardException;
 import br.com.elwgomes.registerapi.core.user.exception.UserAlreadyExistsException;
 
 import br.com.elwgomes.registerapi.core.user.exception.UserNotFoundException;
@@ -26,7 +27,13 @@ public class ExceptionAdviceController extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(UserNotFoundException.class)
-    public ResponseEntity<ExceptionResponse> FieldCantBeNullHandler (UserNotFoundException exception) {
+    public ResponseEntity<ExceptionResponse> UserNotFoundException (UserNotFoundException exception) {
+        ExceptionResponse response = new ExceptionResponse(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST, exception.getMessage());
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
+    }
+
+    @ExceptionHandler(StandardException.class)
+    public ResponseEntity<ExceptionResponse> StandardException (StandardException exception) {
         ExceptionResponse response = new ExceptionResponse(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST, exception.getMessage());
         return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
     }

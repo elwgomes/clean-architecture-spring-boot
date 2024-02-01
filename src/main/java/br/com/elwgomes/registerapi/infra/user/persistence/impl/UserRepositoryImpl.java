@@ -1,6 +1,8 @@
 package br.com.elwgomes.registerapi.infra.user.persistence.impl;
 
 import br.com.elwgomes.registerapi.core.user.domain.User;
+import br.com.elwgomes.registerapi.core.user.exception.StandardException;
+import br.com.elwgomes.registerapi.core.user.exception.UserNotFoundException;
 import br.com.elwgomes.registerapi.core.user.repository.UserRepository;
 import br.com.elwgomes.registerapi.core.user.repository.validator.UserValidatorRepository;
 import br.com.elwgomes.registerapi.infra.user.persistence.entity.UserEntity;
@@ -9,7 +11,6 @@ import br.com.elwgomes.registerapi.infra.user.persistence.repositories.UserJpaRe
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import javax.swing.text.html.Option;
 import java.util.Collection;
 import java.util.Optional;
 import java.util.UUID;
@@ -48,6 +49,22 @@ public class UserRepositoryImpl implements UserRepository, UserValidatorReposito
     public Optional<User> findById(UUID id) {
         Optional<UserEntity> entity = jpaRepository.findById(id);
         return entity.map(mapper::mapToDomain);
+    }
+
+    @Override
+    public User updatePassword(UUID id, User user) throws StandardException, UserNotFoundException {
+        Optional<UserEntity> obj = jpaRepository.findById(id);
+
+        if (!obj.isPresent()) {
+            throw new UserNotFoundException("User not found.");
+        }
+        UserEntity entity = obj.get();
+        if (user.getPassword() == null || user.getPassword().isBlank()) {
+            throw new StandardException("Something goes wrong");
+        }
+        String encryptedPasswd = new BCryptPasswordEncoder().encode(user.getPassword());
+        entity.setPassword(encryptedPasswd);
+        return mapper.mapToDomain(jpaRepository.save(entity));
     }
 
     @Override

@@ -3,10 +3,7 @@ package br.com.elwgomes.registerapi.infra.user.config;
 import br.com.elwgomes.registerapi.core.user.domain.UserType;
 import br.com.elwgomes.registerapi.core.user.repository.UserRepository;
 import br.com.elwgomes.registerapi.core.user.repository.validator.UserValidatorRepository;
-import br.com.elwgomes.registerapi.core.user.usecase.handler.DeleteUserHandler;
-import br.com.elwgomes.registerapi.core.user.usecase.handler.GetAllUsersHandler;
-import br.com.elwgomes.registerapi.core.user.usecase.handler.GetUserByIdHandler;
-import br.com.elwgomes.registerapi.core.user.usecase.handler.SaveUserHandler;
+import br.com.elwgomes.registerapi.core.user.usecase.handler.*;
 import br.com.elwgomes.registerapi.infra.user.persistence.entity.UserEntity;
 import br.com.elwgomes.registerapi.infra.user.persistence.impl.UserRepositoryImpl;
 import br.com.elwgomes.registerapi.infra.user.persistence.mapper.UserRepositoryMapperImpl;
@@ -63,6 +60,11 @@ public class UserConfig implements CommandLineRunner {
     @Bean
     public SaveUserHandler createSaveUserHandler(UserRepository userRepository, UserValidatorRepository userValidatorRepository) {
         return new SaveUserHandler(userRepository, userValidatorRepository);
+    }
+
+    @Bean
+    public UpdatePasswordHandler createUpdateUserHandler(UserRepository userRepository) {
+        return new UpdatePasswordHandler(userRepository);
     }
 
 }

@@ -52,11 +52,11 @@ public class SecurityConfiguration {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(
                         authorize -> authorize
-                                .requestMatchers(HttpMethod.POST, "auth/login").permitAll()
-                                .requestMatchers(HttpMethod.POST, "api/v1/user").hasRole("ADMIN")
-                                .requestMatchers(HttpMethod.DELETE, "api/v1/user/**").hasRole("ADMIN")
-                                .requestMatchers(toH2Console()).permitAll()
-                                .anyRequest().authenticated()
+                                .requestMatchers(HttpMethod.POST, "api/v1/user").hasRole("ADMIN") // only admin
+                                .requestMatchers(HttpMethod.DELETE, "api/v1/user/**").hasRole("ADMIN") // only admin
+                                .requestMatchers(HttpMethod.POST, "auth/login").permitAll() // full access to evbody
+                                .requestMatchers(toH2Console()).permitAll() // permit h2
+                                .anyRequest().permitAll() // all paths need auth
                 )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();

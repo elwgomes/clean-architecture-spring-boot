@@ -7,14 +7,21 @@ import br.com.elwgomes.registerapi.core.user.dto.UserDTO;
 import br.com.elwgomes.registerapi.infra.user.persistence.entity.AddressEntity;
 import br.com.elwgomes.registerapi.infra.user.persistence.entity.UserEntity;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class UserRepositoryMapperImpl implements UserRepositoryMapper<User, UserEntity, UserDTO> {
 
     @Override
     public User mapToDomain(UserEntity entity) {
-        List<Address> addresses = entity.getAddresses().stream().map(address -> new Address(null, address.getZipCode(), address.getCity(), address.getState(), address.getNeighborhood(), address.getStreet(), address.getNumber())).collect(Collectors.toList());
+        List<Address> addresses = Optional.ofNullable(entity.getAddresses())
+                .orElse(Collections.emptyList())
+                .stream()
+                .map(address -> new Address(null, address.getZipCode(), address.getCity(), address.getState(), address.getNeighborhood(), address.getStreet(), address.getNumber()))
+                .collect(Collectors.toList());
         return new User(entity.getId(), entity.getUsername(), entity.getPassword(), entity.getDocument(), entity.getEmail(), entity.getRole(), addresses);
     }
 

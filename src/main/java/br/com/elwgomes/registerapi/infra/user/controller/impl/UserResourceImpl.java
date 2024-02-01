@@ -1,12 +1,10 @@
 package br.com.elwgomes.registerapi.infra.user.controller.impl;
 
 import br.com.elwgomes.registerapi.core.user.domain.User;
+import br.com.elwgomes.registerapi.core.user.exception.StandardException;
 import br.com.elwgomes.registerapi.core.user.exception.UserAlreadyExistsException;
 import br.com.elwgomes.registerapi.core.user.exception.UserNotFoundException;
-import br.com.elwgomes.registerapi.core.user.usecase.command.DeleteUserCommand;
-import br.com.elwgomes.registerapi.core.user.usecase.command.GetAllUsersCommand;
-import br.com.elwgomes.registerapi.core.user.usecase.command.GetUserByIdCommand;
-import br.com.elwgomes.registerapi.core.user.usecase.command.SaveUserCommand;
+import br.com.elwgomes.registerapi.core.user.usecase.command.*;
 import br.com.elwgomes.registerapi.infra.user.controller.UserResource;
 import br.com.elwgomes.registerapi.infra.user.controller.response.UserResponse;
 import br.com.elwgomes.registerapi.core.user.dto.UserDTO;
@@ -16,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -33,6 +32,7 @@ public class UserResourceImpl implements UserResource {
     private final GetUserByIdCommand getUserByIdCommand;
     private final SaveUserCommand saveUserCommand;
     private final DeleteUserCommand deleteUserCommand;
+    private final UpdatePasswordCommand updateUserCommand;
 
     private final UserRepositoryMapperImpl mapper;
 
@@ -41,6 +41,7 @@ public class UserResourceImpl implements UserResource {
     public UserResponse<Collection<UserDTO>> getAllUsers() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String role = authentication.getAuthorities().stream().findFirst().map(Object::toString).orElse("");
+        System.out.println(authentication);
         if ("ROLE_ADMIN".equals(role)) {
             return new UserResponse<>("success", String.valueOf(HttpStatus.OK), "OK", getAllUsersCommand.execute().stream().map(mapper::mapDomainToDtoFullDetails).collect(Collectors.toList()));
         }
@@ -78,6 +79,19 @@ public class UserResourceImpl implements UserResource {
             return new UserResponse<>("success", String.valueOf(HttpStatus.OK), "OK", getUserByIdCommand.execute(id).map(mapper::mapDomainToDtoFullDetails));
         }
         return new UserResponse<>("success", String.valueOf(HttpStatus.OK), "OK", getUserByIdCommand.execute(id).map(mapper::mapDomainToDto));
+    }
+
+    @Override
+    @PutMapping("{id}")
+    public UserResponse<Boolean> updatePassword(@PathVariable("id") UUID id, @RequestBody UserEntity entity) throws StandardException, UserNotFoundException {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String role = authentication.getAuthorities().stream().findFirst().map(Object::toString).orElse("");
+        UUID authenticatedUserId = ((UserEntity) authentication.getPrincipal()).getId();
+        if ("ROLE_ADMIN".equals(role) || id.equals(authenticatedUserId)) {
+            updateUserCommand.execute(id, mapper.mapToDomain(entity));
+            return new UserResponse<>("success", String.valueOf(HttpStatus.OK), "Password updated successfully.");
+        }
+        return new UserResponse<>("error", String.valueOf(HttpStatus.FORBIDDEN), "You don't have permission to update this user's password.");
     }
 
 }
