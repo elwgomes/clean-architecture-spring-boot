@@ -1,9 +1,11 @@
 package br.com.elwgomes.registerapi.infra.user.controller.impl;
 
+import br.com.elwgomes.registerapi.core.user.domain.User;
 import br.com.elwgomes.registerapi.core.user.exception.UserAlreadyExistsException;
 import br.com.elwgomes.registerapi.core.user.exception.UserNotFoundException;
 import br.com.elwgomes.registerapi.core.user.usecase.command.DeleteUserCommand;
 import br.com.elwgomes.registerapi.core.user.usecase.command.GetAllUsersCommand;
+import br.com.elwgomes.registerapi.core.user.usecase.command.GetUserByIdCommand;
 import br.com.elwgomes.registerapi.core.user.usecase.command.SaveUserCommand;
 import br.com.elwgomes.registerapi.infra.user.controller.UserResource;
 import br.com.elwgomes.registerapi.infra.user.controller.response.UserResponse;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.Collection;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -27,6 +30,7 @@ import java.util.stream.Collectors;
 public class UserResourceImpl implements UserResource {
 
     private final GetAllUsersCommand getAllUsersCommand;
+    private final GetUserByIdCommand getUserByIdCommand;
     private final SaveUserCommand saveUserCommand;
     private final DeleteUserCommand deleteUserCommand;
 
@@ -62,9 +66,18 @@ public class UserResourceImpl implements UserResource {
         } catch (UserNotFoundException exception) {
             throw new UserNotFoundException(exception.getMessage());
         }
-
         return new UserResponse<>("no content", String.valueOf(HttpStatus.NO_CONTENT), "User has been deleted.");
+    }
 
+    @Override
+    @GetMapping("{id}")
+    public UserResponse<Optional<UserDTO>> findUserById(@PathVariable("id") UUID id) throws UserNotFoundException {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String role = authentication.getAuthorities().stream().findFirst().map(Object::toString).orElse("");
+        if ("ROLE_ADMIN".equals(role)) {
+            return new UserResponse<>("success", String.valueOf(HttpStatus.OK), "OK", getUserByIdCommand.execute(id).map(mapper::mapDomainToDtoFullDetails));
+        }
+        return new UserResponse<>("success", String.valueOf(HttpStatus.OK), "OK", getUserByIdCommand.execute(id).map(mapper::mapDomainToDto));
     }
 
 }
