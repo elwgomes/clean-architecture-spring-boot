@@ -27,7 +27,7 @@ Originally, `SWAGGER` documents the entire API in detail, but it is worth rememb
 ###### auth/login
 ```
 {
-  "admin": "admin",
+  "username": "admin",
   "password": "admin"
 }
 ```
