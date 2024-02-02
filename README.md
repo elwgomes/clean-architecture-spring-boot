@@ -25,7 +25,10 @@ Builded with `JAVA 17` and `maven`.
 Originally, `SWAGGER` documents the entire API in detail, but it is worth remembering that it is necessary to use an authenticated login to use most endpoints.
 
 ###### auth/login
+
+
 ```
+request:
 {
   "username": "admin",
   "password": "admin"
@@ -33,6 +36,14 @@ Originally, `SWAGGER` documents the entire API in detail, but it is worth rememb
 ```
 
 You will receive a `JWT` token, use the `Bearer ` prefix concatenated to the token and you will be able to access the endpoints.
+
+```
+response:
+{
+  "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+}
+
+```
 
 ### Tecnologies
 - Hibernate
