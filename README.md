@@ -16,9 +16,17 @@ Concretely, there are two main packages: `core` (`domain` and `usecases`) and `i
 - `usecases` situated at the `core` package are like a conductor. It will only depend on the `domain` package to execute the business logic. Use cases should not have any `infra` dependencies.
 ```
 
-# About this simple project
+# About this project
+
+it is a simple project that simulates user registrations, addressing the SOLID principles and utilizing ORM tools, with the 1 to N relationship as the main example. The project also simulates permission distribution, where some endpoints can only be accessed by users at the top of the hierarchy.
 
 Builded with `JAVA 17` and `maven`.
+
+
+## UML Diagram
+
+![uml diagram](src/main/resources/img/uml_diagram.png)
+
 
 #### Authentication
 
