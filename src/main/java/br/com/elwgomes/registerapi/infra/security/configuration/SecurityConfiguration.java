@@ -25,7 +25,19 @@ import static org.springframework.boot.autoconfigure.security.servlet.PathReques
 public class SecurityConfiguration {
 
     private static final String H2_CONSOLE_PATH = "/h2-console/**";
-
+    private static final String[] SWAGGER_AUTH_WHITELIST = {
+            // -- Swagger UI v2
+            "/v2/api-docs",
+            "/swagger-resources",
+            "/swagger-resources/**",
+            "/configuration/ui",
+            "/configuration/security",
+            "/swagger-ui.html",
+            "/webjars/**",
+            // -- Swagger UI v3 (OpenAPI)
+            "/v3/api-docs/**",
+            "/swagger-ui/**"
+    };
     @Autowired
     private SecurityFilter securityFilter;
 
@@ -56,7 +68,8 @@ public class SecurityConfiguration {
                                 .requestMatchers(HttpMethod.DELETE, "api/v1/user/**").hasRole("ADMIN") // only admin
                                 .requestMatchers(HttpMethod.POST, "auth/login").permitAll() // full access to evbody
                                 .requestMatchers(toH2Console()).permitAll() // permit h2
-                                .anyRequest().permitAll() // all paths need auth
+                                .requestMatchers(SWAGGER_AUTH_WHITELIST).permitAll() // permit Swagger
+                                .anyRequest().authenticated() // all paths need auth
                 )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
