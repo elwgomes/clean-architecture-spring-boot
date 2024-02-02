@@ -32,6 +32,8 @@ Originally, `SWAGGER` documents the entire API in detail, but it is worth rememb
 }
 ```
 
+You will receive a `JWT` token, use the `Bearer ` prefix concatenated to the token and you will be able to access the endpoints.
+
 ### Tecnologies
 - Hibernate
 - [Spring Boot](https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/)
